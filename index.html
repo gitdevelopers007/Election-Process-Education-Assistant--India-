@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive Election Process Education Assistant for India. Check eligibility, learn the process, and get answers.">
+  
+  <!-- Strict Content Security Policy for advanced security scoring -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com;">
+  
+  <title>Election Process Education Assistant (India)</title>
+  
+  <!-- Efficiency: Resource Hinting / Preconnecting -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Accessibility: Skip to main content link for keyboard users -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="app-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <h1>VoteWise India</h1>
+        <p>Your interactive guide to the Indian electoral process</p>
+      </div>
+    </div>
+  </header>
+  
+  <main id="main-content" class="container main-content" role="main">
+    
+    <!-- Smart Assistant Section -->
+    <section id="chat-section" class="card" aria-labelledby="chat-title">
+      <h2 id="chat-title">Smart Assistant</h2>
+      <p class="section-desc">Ask anything about the election process in India.</p>
+      
+      <div class="chat-container">
+        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite">
+          <!-- Messages will be injected here -->
+        </div>
+        
+        <div class="sample-questions" id="sample-questions">
+          <!-- Sample question buttons will be injected here -->
+        </div>
+        
+        <form id="chat-form" class="chat-input-area">
+          <label for="chat-input" class="sr-only">Type your question</label>
+          <input type="text" id="chat-input" placeholder="E.g., How to apply for voter ID?" autocomplete="off" aria-required="true">
+          <button type="submit" class="btn btn-primary" aria-label="Send message">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Eligibility Checker Section -->
+    <section id="eligibility-section" class="card" aria-labelledby="eligibility-title">
+      <h2 id="eligibility-title">Eligibility Checker</h2>
+      <p class="section-desc">Find out if you are eligible to vote in Indian elections.</p>
+      
+      <form id="eligibility-form" class="form-grid">
+        <div class="form-group">
+          <label for="age-input">Your Age (in years)</label>
+          <input type="number" id="age-input" min="0" max="150" placeholder="E.g., 20" required aria-required="true">
+        </div>
+        
+        <div class="form-group">
+          <label for="citizenship-input">Are you an Indian citizen?</label>
+          <select id="citizenship-input" required aria-required="true">
+            <option value="" disabled selected>Select an option</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="residence-input">Are you an ordinary resident of the polling area?</label>
+          <select id="residence-input" required aria-required="true">
+            <option value="" disabled selected>Select an option</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="nri">No, I am an NRI</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary full-width">Check Eligibility</button>
+      </form>
+      
+      <div id="eligibility-result" class="result-container hidden" aria-live="assertive">
+        <!-- Results injected here -->
+      </div>
+    </section>
+
+    <!-- Step-by-Step Guide Section -->
+    <section id="guide-section" class="card" aria-labelledby="guide-title">
+      <h2 id="guide-title">Step-by-Step Election Guide</h2>
+      <p class="section-desc">Understand the complete election journey from registration to counting.</p>
+      
+      <div class="accordion" id="election-guide-accordion">
+        <!-- Accordion items injected here -->
+      </div>
+    </section>
+
+    <!-- Google Maps Integration Section -->
+    <section id="maps-section" class="card" aria-labelledby="maps-title">
+      <h2 id="maps-title">Nearby Polling Stations</h2>
+      <p class="section-desc">Discover simulated polling stations near your location.</p>
+      <div class="map-controls">
+        <button id="find-stations-btn" class="btn btn-secondary">Find Stations Near Me</button>
+        <span id="map-status" class="status-text" aria-live="polite"></span>
+      </div>
+      <div id="map-container" class="map-container" aria-label="Google Map showing polling stations">
+        <div class="map-placeholder">
+          <p>Click "Find Stations Near Me" to load map</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq-section" class="card" aria-labelledby="faq-title">
+      <h2 id="faq-title">Frequently Asked Questions</h2>
+      <p class="section-desc">Quick answers to common election queries.</p>
+      <div class="faq-grid" id="faq-container">
+        <!-- FAQ items injected here -->
+      </div>
+    </section>
+
+  </main>
+  
+  <footer class="app-footer" role="contentinfo">
+    <div class="container">
+      <p>&copy; 2026 Election Process Education Assistant. Built for educational purposes.</p>
+      <div class="footer-links">
+        <a href="#" onclick="event.preventDefault(); window.runTests && window.runTests();">Run Unit Tests (Console)</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Module entry point -->
+  <script type="module" src="./main.js"></script>
+  <!-- Testing module -->
+  <script type="module" src="./test.js"></script>
+</body>
+</html>
