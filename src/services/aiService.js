@@ -7,7 +7,7 @@
 import { CHAT_KNOWLEDGE_BASE, FALLBACK_RESPONSE } from '../data/chatKnowledge.js';
 
 // Secure configuration: API key is kept as a placeholder.
-const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
+const GEMINI_API_KEY = 'AIzaSyA9g5Q7Xm1gaKwd7Ati6EiCwBZYAZjk-f8';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 /**
@@ -31,8 +31,8 @@ export async function getSmartResponse(query) {
       body: JSON.stringify({
         contents: [{
           role: "user",
-          parts: [{ 
-            text: `You are a helpful, professional, and concise assistant specializing in the Indian Election Process. Answer the following question simply, using paragraphs or bullet points where necessary. Do not use complex markdown or HTML. Question: ${query}` 
+          parts: [{
+            text: `You are a helpful, professional, and concise assistant specializing in the Indian Election Process. Answer the following question simply, using paragraphs or bullet points where necessary. Do not use complex markdown or HTML. Question: ${query}`
           }]
         }],
         generationConfig: {
@@ -47,7 +47,7 @@ export async function getSmartResponse(query) {
     }
 
     const data = await response.json();
-    
+
     if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
       return data.candidates[0].content.parts[0].text;
     } else {
@@ -67,7 +67,7 @@ export async function getSmartResponse(query) {
  */
 function getFallbackResponse(query) {
   const lowerQuery = query.toLowerCase();
-  
+
   for (const category in CHAT_KNOWLEDGE_BASE) {
     const { keywords, response } = CHAT_KNOWLEDGE_BASE[category];
     // Check if any keyword exists as a substring in the user query
@@ -75,6 +75,6 @@ function getFallbackResponse(query) {
       return response;
     }
   }
-  
+
   return FALLBACK_RESPONSE;
 }

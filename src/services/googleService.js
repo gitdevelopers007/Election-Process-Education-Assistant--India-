@@ -7,7 +7,7 @@
 import { createElement } from '../utils/dom.js';
 
 // Placeholders for security
-const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY_HERE';
+const GOOGLE_API_KEY = 'AIzaSyCugstUbGuLiBRXmXGqQFFWmIcbRnMbh4Q';
 
 let mapInstance;
 let isMapScriptLoaded = false;
@@ -72,7 +72,7 @@ function injectMapsScript() {
 function handleFindStations(btn, statusText) {
   btn.disabled = true;
   statusText.textContent = "Locating nearby polling stations...";
-  
+
   setTimeout(() => {
     renderMap();
     statusText.textContent = "Showing nearby polling stations.";
@@ -87,7 +87,7 @@ function handleFindStations(btn, statusText) {
 function renderMap() {
   const mapContainer = document.getElementById('map-container');
   if (!mapContainer) return;
-  
+
   if (!isMapScriptLoaded || typeof google === 'undefined' || !google.maps) {
     renderMapFallback(mapContainer);
     return;
@@ -113,19 +113,19 @@ function renderMap() {
  */
 function renderMapFallback(container) {
   container.innerHTML = ''; // Clear existing
-  
+
   const title = createElement('p', {}, ['Google Maps API requires a valid API Key to render interactively.']);
   const subtitle = createElement('p', {}, ['Below is a semantic representation of simulated nearby stations:']);
-  
-  const ul = createElement('ul', { 
-    style: 'margin-top: 1rem; padding-left: 2rem; color: #333; text-align: left;' 
+
+  const ul = createElement('ul', {
+    style: 'margin-top: 1rem; padding-left: 2rem; color: #333; text-align: left;'
   }, [
     createElement('li', {}, ['KV School Polling Booth (0.5 km)']),
     createElement('li', {}, ['Community Hall Booth 42 (1.2 km)']),
     createElement('li', {}, ['Municipal Office Booth C (2.0 km)'])
   ]);
 
-  const fallbackDiv = createElement('div', { 
+  const fallbackDiv = createElement('div', {
     className: 'map-placeholder',
     style: 'flex-direction: column; padding: 2rem;'
   }, [title, subtitle, ul]);
