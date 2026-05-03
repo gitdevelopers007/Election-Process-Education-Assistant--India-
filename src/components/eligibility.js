@@ -115,8 +115,10 @@ function determineEligibility(age, citizenship, residence) {
  * @param {string[]} [nextSteps=[]] - Actionable steps for the user.
  */
 function renderResult(container, isEligible, title, message, nextSteps = []) {
-  // Clear any previous results
-  container.innerHTML = '';
+  // Clear any previous results using safe DOM removal
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
   container.className = `result-container ${isEligible ? 'result-eligible' : 'result-not-eligible'}`;
   
   const children = [

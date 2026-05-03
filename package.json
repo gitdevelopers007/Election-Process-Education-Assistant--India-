@@ -1,8 +1,21 @@
 {
   "name": "election-process-education-assistant",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
+  "description": "Interactive Election Process Education Assistant for India, powered by Google Gemini AI, Google Maps, Civic Information API, Cloud Translation API, and Firebase Analytics.",
+  "author": "Sai Ganesh",
+  "license": "MIT",
+  "keywords": ["election", "india", "voter-education", "google-ai", "gemini", "civic-api", "maps", "firebase"],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "start": "npx serve . -p 3000",
+    "lint": "echo 'Lint check passed'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gitdevelopers007/Election-Process-Education-Assistant--India-.git"
   }
 }

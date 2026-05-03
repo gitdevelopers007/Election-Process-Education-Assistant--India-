@@ -3,7 +3,7 @@
  * Handles user interaction, input validation, and rendering dynamic AI bot responses securely.
  */
 
-import { createElement, formatTextToHTML } from '../utils/dom.js';
+import { createElement, formatTextToDOM } from '../utils/dom.js';
 import { validateChatInput } from '../utils/validation.js';
 import { showToast } from '../utils/toast.js';
 import { SAMPLE_QUESTIONS } from '../data/chatKnowledge.js';
@@ -106,8 +106,8 @@ function addMessage(text, sender, container) {
   });
   
   if (isBot) {
-    // Bot responses (either from AI or local fallback) are formatted safely
-    msgDiv.innerHTML = formatTextToHTML(text);
+    // Bot responses are formatted safely via DOM nodes (zero innerHTML)
+    formatTextToDOM(text).forEach(node => msgDiv.appendChild(node));
   } else {
     // User input is ALWAYS assigned via textContent, effectively neutralizing XSS.
     msgDiv.textContent = text;

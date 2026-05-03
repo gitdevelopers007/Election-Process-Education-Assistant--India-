@@ -41,7 +41,9 @@ function createAccordionItem(step, index, isFirst) {
 
   // Content Elements
   const innerContent = createElement('div', { className: 'accordion-content-inner' });
-  innerContent.innerHTML = step.content; // Content is trusted from guideSteps.js
+  // Render content safely via textContent (content is from guideSteps.js)
+  const contentPara = createElement('p', {}, [step.content]);
+  innerContent.appendChild(contentPara);
   
   const contentDiv = createElement('div', {
     className: 'accordion-content',

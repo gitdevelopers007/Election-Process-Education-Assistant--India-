@@ -147,6 +147,9 @@ p {
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
   transition: box-shadow 0.2s ease;
+  contain: layout style;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
 }
 
 .card:hover {

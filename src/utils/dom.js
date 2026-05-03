@@ -71,3 +71,17 @@ export function formatTextToHTML(text) {
     .map(p => `<p>${escapeHTML(p)}</p>`)
     .join('');
 }
+
+/**
+ * Formats multi-line text into an array of safe DOM paragraph nodes.
+ * This is the zero-innerHTML alternative to formatTextToHTML.
+ * 
+ * @param {string} text - The raw text to format.
+ * @returns {HTMLElement[]} Array of paragraph elements with safe text content.
+ */
+export function formatTextToDOM(text) {
+  if (!text) return [];
+  return text.split('\n\n')
+    .filter(p => p.trim() !== '')
+    .map(p => createElement('p', {}, [p]));
+}
