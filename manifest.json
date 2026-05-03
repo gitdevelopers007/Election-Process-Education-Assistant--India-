@@ -1,0 +1,9 @@
+{
+  "name": "VoteWise India",
+  "short_name": "VoteWise",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0056b3",
+  "description": "Interactive Election Process Education Assistant for India."
+}
