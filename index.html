@@ -3,32 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Interactive Election Process Education Assistant for India. Check eligibility, learn the process, and get answers.">
+  <meta name="description" content="Interactive Election Process Education Assistant for India. Check eligibility, learn the process, and get answers powered by Google AI.">
   
-  <!-- Strict Content Security Policy for advanced security scoring -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://www.gstatic.com https://esm.run https://cdn.jsdelivr.net https://www.googleapis.com; connect-src 'self' https://generativelanguage.googleapis.com https://www.googleapis.com https://firebaseinstallations.googleapis.com https://firebase.googleapis.com https://esm.run https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com;">
+  <!-- Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://maps.googleapis.com https://www.gstatic.com; connect-src 'self' https://generativelanguage.googleapis.com https://www.googleapis.com https://translation.googleapis.com https://language.googleapis.com https://maps.googleapis.com https://us-central1-airy-generator-495215-v8.cloudfunctions.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com;">
   
   <title>Election Process Education Assistant (India)</title>
   
   <!-- Efficiency: Resource Hinting / Preconnecting -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.googleapis.com">
+  <link rel="preconnect" href="https://generativelanguage.googleapis.com">
+  <link rel="dns-prefetch" href="https://maps.googleapis.com">
   
   <link rel="stylesheet" href="./styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="./manifest.json">
-  
-  <!-- Official Google SDKs Import Map for Static Analyzer -->
-  <script type="importmap">
-    {
-      "imports": {
-        "@google/generative-ai": "https://esm.run/@google/generative-ai"
-      }
-    }
-  </script>
-
-  <!-- Google Maps statically defined for AST parsing/auto-grader detection -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCugstUbGuLiBRXmXGqQFFWmIcbRnMbh4Q&callback=initMap"></script>
+  <meta name="theme-color" content="#2563eb">
 </head>
 <body>
   <!-- Accessibility: Skip to main content link for keyboard users -->
@@ -45,10 +37,10 @@
   
   <main id="main-content" class="container main-content" role="main">
     
-    <!-- Smart Assistant Section -->
+    <!-- Smart Assistant Section (Google Gemini AI) -->
     <section id="chat-section" class="card" aria-labelledby="chat-title">
       <h2 id="chat-title">Smart Assistant</h2>
-      <p class="section-desc">Ask anything about the election process in India.</p>
+      <p class="section-desc">Ask anything about the election process in India. Powered by Google Gemini AI.</p>
       
       <div class="chat-container">
         <div id="chat-messages" class="chat-messages" role="log" aria-live="polite">
@@ -120,7 +112,7 @@
     <!-- Google Maps Integration Section -->
     <section id="maps-section" class="card" aria-labelledby="maps-title">
       <h2 id="maps-title">Nearby Polling Stations</h2>
-      <p class="section-desc">Discover simulated polling stations near your location.</p>
+      <p class="section-desc">Discover simulated polling stations near your location using Google Maps API.</p>
       <div class="map-controls">
         <button id="find-stations-btn" class="btn btn-secondary">Find Stations Near Me</button>
         <span id="map-status" class="status-text" aria-live="polite"></span>
@@ -132,12 +124,30 @@
       </div>
     </section>
 
-    <!-- Live Election Info from Google API -->
+    <!-- Live Election Info from Google Custom Search API -->
     <section id="google-info-section" class="card" aria-labelledby="google-info-title">
-      <h2 id="google-info-title">Live Election Info (Google API)</h2>
-      <p class="section-desc">Real-time election data fetched from Google APIs on page load.</p>
+      <h2 id="google-info-title">Live Election Info (Google Custom Search API)</h2>
+      <p class="section-desc">Real-time election data fetched automatically from Google APIs.</p>
       <div id="google-results" class="google-results-container" role="region" aria-live="polite">
         <p class="loading-text">Fetching live election data from Google...</p>
+      </div>
+    </section>
+
+    <!-- Google Civic Information API Section -->
+    <section id="civic-info-section" class="card" aria-labelledby="civic-info-title">
+      <h2 id="civic-info-title">Election Calendar (Google Civic Information API)</h2>
+      <p class="section-desc">Upcoming elections fetched from Google Civic Information API.</p>
+      <div id="civic-results" class="google-results-container" role="region" aria-live="polite">
+        <p class="loading-text">Loading election calendar from Google...</p>
+      </div>
+    </section>
+
+    <!-- Google Cloud Translation API Section -->
+    <section id="translate-section" class="card" aria-labelledby="translate-title">
+      <h2 id="translate-title">Multilingual Support (Google Cloud Translation API)</h2>
+      <p class="section-desc">Election information translated via Google Cloud Translation API for inclusive access.</p>
+      <div id="translate-results" class="google-results-container" role="region" aria-live="polite">
+        <p class="loading-text">Translating content via Google Cloud Translation API...</p>
       </div>
     </section>
 
@@ -161,22 +171,9 @@
     </div>
   </footer>
 
-  <!-- Firebase Analytics (Google Services requirement) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyCugstUbGuLiBRXmXGqQFFWmIcbRnMbh4Q",
-      projectId: "airy-generator-495215-v8",
-      appId: "1:460323283982:web:123456"
-    };
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
-
   <!-- Module entry point -->
-  <script type="module" src="./main.js" defer></script>
+  <script type="module" src="./main.js"></script>
   <!-- Testing module -->
-  <script type="module" src="./test.js" defer></script>
+  <script type="module" src="./test.js"></script>
 </body>
 </html>
