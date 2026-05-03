@@ -511,6 +511,19 @@ details[open] .faq-summary::after {
   color: var(--text-muted);
 }
 
+/* Google Results */
+.google-results-container {
+  padding: 1rem;
+  background: var(--secondary-color);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.loading-text {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* Footer */
 .app-footer {
   text-align: center;

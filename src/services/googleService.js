@@ -1,13 +1,15 @@
 /**
  * @fileoverview Google Services Integration.
- * Handles IntersectionObserver lazy-loading for Maps and dynamic fetching
- * for the Google Civic Information API, with highly accessible fallbacks.
+ * Handles IntersectionObserver lazy-loading for Maps, dynamic fetching
+ * for the Google Civic Information API and Google Custom Search API,
+ * with highly accessible fallbacks and visible UI rendering.
  */
 
 import { createElement } from '../utils/dom.js';
 
-// Placeholders for security
+// Google API Key for Maps, Civic Info, and Custom Search
 const GOOGLE_API_KEY = 'AIzaSyCugstUbGuLiBRXmXGqQFFWmIcbRnMbh4Q';
+const GOOGLE_CX = '017576662512468239146:omuauf_gy8a'; // Google Custom Search Engine ID
 
 let mapInstance;
 let isMapScriptLoaded = false;
@@ -17,7 +19,128 @@ let isMapScriptLoaded = false;
  */
 export function initGoogleServices() {
   setupLazyLoadMap();
-  setupDynamicCivicDataFetch();
+  fetchElectionInfoFromGoogle();
+  fetchCivicElectionData();
+}
+
+/**
+ * Fetches election-related information from Google Custom Search API.
+ * Executes automatically on page load and renders results in the UI.
+ */
+async function fetchElectionInfoFromGoogle() {
+  const resultsContainer = document.getElementById('google-results');
+  if (!resultsContainer) return;
+
+  try {
+    const query = 'Indian Election Process 2024 voter registration';
+    const response = await fetch(
+      `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&num=5`
+    );
+    const data = await response.json();
+
+    console.log("Google Custom Search API Response:", data);
+
+    if (data.items && data.items.length > 0) {
+      renderGoogleResults(resultsContainer, data.items);
+    } else {
+      renderGoogleFallback(resultsContainer);
+    }
+  } catch (error) {
+    console.error("Google Custom Search API failed, using fallback:", error);
+    renderGoogleFallback(resultsContainer);
+  }
+}
+
+/**
+ * Renders live Google API results into the UI using safe DOM methods.
+ * @param {HTMLElement} container - The results container.
+ * @param {Array} items - The search result items from Google API.
+ */
+function renderGoogleResults(container, items) {
+  container.innerHTML = '';
+
+  const heading = createElement('p', { 
+    style: 'font-weight: 600; margin-bottom: 0.75rem; color: var(--primary-color, #0056b3);' 
+  }, ['Live results from Google Search API:']);
+  container.appendChild(heading);
+
+  const list = createElement('ul', {
+    style: 'list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;'
+  });
+
+  items.slice(0, 5).forEach(item => {
+    const title = createElement('strong', {}, [item.title || 'Election Info']);
+    const snippet = createElement('p', {
+      style: 'margin: 0.25rem 0 0 0; font-size: 0.9rem; color: #555;'
+    }, [item.snippet || '']);
+    
+    const li = createElement('li', {
+      style: 'padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border-left: 3px solid var(--primary-color, #0056b3);'
+    }, [title, snippet]);
+
+    list.appendChild(li);
+  });
+
+  container.appendChild(list);
+}
+
+/**
+ * Renders fallback election information when API is unavailable.
+ * @param {HTMLElement} container - The results container.
+ */
+function renderGoogleFallback(container) {
+  container.innerHTML = '';
+
+  const fallbackData = [
+    { title: 'Election Commission of India (ECI)', snippet: 'The ECI is responsible for administering election processes in India at national, state, and district levels.' },
+    { title: 'Voter Registration Process', snippet: 'Indian citizens who are 18 years or older can register to vote by filling Form 6 online at nvsp.in or at their local Electoral Registration Office.' },
+    { title: 'Types of Elections in India', snippet: 'India conducts Lok Sabha (General), Rajya Sabha, State Assembly (Vidhan Sabha), and Local Body elections.' },
+    { title: 'Electronic Voting Machines (EVMs)', snippet: 'India uses EVMs with VVPAT (Voter Verifiable Paper Audit Trail) for transparent and efficient voting.' },
+    { title: 'Important Election Documents', snippet: 'Voters need an EPIC (Voter ID Card) or any of 12 approved photo ID documents to cast their vote.' }
+  ];
+
+  const heading = createElement('p', { 
+    style: 'font-weight: 600; margin-bottom: 0.75rem; color: var(--primary-color, #0056b3);' 
+  }, ['Election Information (Google API fallback):']);
+  container.appendChild(heading);
+
+  const list = createElement('ul', {
+    style: 'list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;'
+  });
+
+  fallbackData.forEach(item => {
+    const title = createElement('strong', {}, [item.title]);
+    const snippet = createElement('p', {
+      style: 'margin: 0.25rem 0 0 0; font-size: 0.9rem; color: #555;'
+    }, [item.snippet]);
+    
+    const li = createElement('li', {
+      style: 'padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border-left: 3px solid var(--primary-color, #0056b3);'
+    }, [title, snippet]);
+
+    list.appendChild(li);
+  });
+
+  container.appendChild(list);
+}
+
+/**
+ * Fetches election data from Google Civic Information API.
+ * Demonstrates real-world dynamic data integration with Google Services.
+ */
+async function fetchCivicElectionData() {
+  try {
+    const response = await fetch(
+      `https://www.googleapis.com/civicinfo/v2/elections?key=${GOOGLE_API_KEY}`
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Google Civic Information API Response:", data);
+    }
+  } catch (err) {
+    console.error("Google Civic API fetch failed:", err);
+  }
 }
 
 /**
@@ -33,14 +156,13 @@ function setupLazyLoadMap() {
       injectMapsScript();
       observer.disconnect();
     }
-  }, { rootMargin: '200px' }); // Load slightly before it enters viewport
+  }, { rootMargin: '200px' });
 
   observer.observe(mapSection);
 
-  // Bind the global callback to our initialization function
   window.initMap = () => {
     isMapScriptLoaded = true;
-    console.log("Google Maps API loaded dynamically.");
+    console.log("Google Maps API loaded dynamically via IntersectionObserver.");
   };
 
   const findBtn = document.getElementById('find-stations-btn');
@@ -93,7 +215,7 @@ function renderMap() {
     return;
   }
 
-  mapContainer.innerHTML = ''; // Clear placeholder safely
+  mapContainer.innerHTML = '';
   const centerLocation = { lat: 28.6139, lng: 77.2090 };
 
   mapInstance = new google.maps.Map(mapContainer, {
@@ -107,12 +229,12 @@ function renderMap() {
 }
 
 /**
- * Renders a fallback UI using strict semantic lists (<ul>/<li>) to ensure 
+ * Renders a fallback UI using strict semantic lists (ul/li) to ensure 
  * near-perfect screen reader accessibility when Maps is unavailable.
  * @param {HTMLElement} container - The map container element.
  */
 function renderMapFallback(container) {
-  container.innerHTML = ''; // Clear existing
+  container.innerHTML = '';
 
   const title = createElement('p', {}, ['Google Maps API requires a valid API Key to render interactively.']);
   const subtitle = createElement('p', {}, ['Below is a semantic representation of simulated nearby stations:']);
@@ -150,26 +272,4 @@ function renderMockMarkers() {
       animation: google.maps.Animation.DROP
     });
   });
-}
-
-/**
- * Sets up a dynamic fetch to the Google Civic Information API.
- * Demonstrates real-world dynamic data integration.
- */
-async function setupDynamicCivicDataFetch() {
-  if (GOOGLE_API_KEY === 'YOUR_GOOGLE_API_KEY_HERE') {
-    console.warn("Civic API key placeholder detected. Bypassing real fetch.");
-    return;
-  }
-
-  try {
-    const response = await fetch(`https://www.googleapis.com/civicinfo/v2/elections?key=${GOOGLE_API_KEY}`);
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Successfully fetched dynamic election data from Google Civic API:", data);
-      // Logic to populate the UI with actual election dates would go here
-    }
-  } catch (err) {
-    console.error("Civic API fetch failed:", err);
-  }
 }
