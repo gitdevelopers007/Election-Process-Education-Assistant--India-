@@ -1,0 +1,12 @@
+{
+  "name": "election-process-education-assistant",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve . -p 8080",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
