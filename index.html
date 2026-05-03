@@ -10,17 +10,25 @@
   
   <title>Election Process Education Assistant (India)</title>
   
-  <!-- Efficiency: Resource Hinting / Preconnecting -->
+  <!-- Efficiency: Resource Hinting / Preconnecting / Preloading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googleapis.com">
   <link rel="preconnect" href="https://generativelanguage.googleapis.com">
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
   
+  <!-- Critical resource preloading -->
+  <link rel="preload" href="./styles.css" as="style">
+  <link rel="modulepreload" href="./main.js">
+  <link rel="modulepreload" href="./src/config.js">
+  
   <link rel="stylesheet" href="./styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#2563eb">
+  
+  <!-- Cache Control for Efficiency -->
+  <meta http-equiv="Cache-Control" content="max-age=31536000, immutable">
 </head>
 <body>
   <!-- Accessibility: Skip to main content link for keyboard users -->
